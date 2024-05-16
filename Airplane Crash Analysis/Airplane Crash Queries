@@ -1,0 +1,227 @@
+SELECT [Type]
+, Count(distinct crash_type)
+FROM [dbo].[airplane_crashes]
+GROUP BY [TYPE]
+
+--------------------------------------
+---NULL Tables regarding survivability 
+--------------------------------------
+
+SELECT * 
+FROM [dbo].[airplane_crashes]
+WHERE Aboard = 0
+	OR Aboard IS NULL
+	OR Fatalities IS NULL
+
+-----------------------------
+--- Crashes by type of craft
+-----------------------------
+
+
+
+SELECT COUNT([Type]) AS TimesCrashed 
+, [Type] 
+FROM [dbo].[airplane_crashes]
+GROUP BY [Type] 
+ORDER BY COUNT([Type]) DESC
+
+-------------------------------------
+--- Survival rate by Aircraft (INCOMPLETE)
+-------------------------------------
+
+SELECT 
+ [type]
+, SUM([Aboard]) AS TotalPassengers 
+, SUM([Fatalities]) AS TotalDeaths
+, CASE
+	WHEN Aboard > 0
+	THEN CAST(([fatalities]/[Aboard] * 100) AS decimal) 
+	ELSE NULL
+END  AS FatalityPercentage
+FROM [dbo].[airplane_crashes]
+GROUP BY  [type]
+
+----------------------------------------------
+---SAMS VERSION OF  Mortality rate by Aircraft
+----------------------------------------------
+
+SELECT 
+[Type]
+,SUM([Aboard]) AS Total_Passengers
+,SUM([Fatalities]) AS Total_Deaths 
+,ROUND (CAST(CASE 
+    WHEN SUM([Aboard]) = 0 
+        OR SUM([Aboard]) IS NULL
+        OR SUM([Fatalities]) IS NULL THEN NULL 
+    WHEN SUM([Fatalities]) = 0 THEN 100
+        ELSE (CAST(SUM([Fatalities])AS FLOAT)/CAST(SUM([Aboard]) AS FLOAT)) * 100
+    END AS FLOAT),2) AS Mortality_Rate
+FROM [dbo].[Airplane_Crashes]
+    GROUP BY [Type];
+
+---------------------------------------
+-- Mortality Rate by Year (Action Filter)
+---------------------------------------
+
+SELECT 
+DISTINCT Year([DATE]) AS 'Year' 
+,ROUND (CAST(CASE 
+    WHEN SUM([Aboard]) = 0 
+        OR SUM([Aboard]) IS NULL
+        OR SUM([Fatalities]) IS NULL THEN NULL 
+    WHEN SUM([Fatalities]) = 0 THEN 100
+        ELSE (CAST(SUM([Fatalities])AS FLOAT)/CAST(SUM([Aboard]) AS FLOAT)) * 100
+    END AS FLOAT),2) AS Mortality_Rate
+FROM [dbo].[Airplane_Crashes]
+    GROUP BY Year([DATE]) 
+	ORDER BY Year([DATE]) ASC
+
+----------------------------
+--- TOP REASONS FOR CRASHES
+----------------------------
+--Mechanical Failure
+SELECT *
+FROM [dbo].[airplane_crashes]
+WHERE SUMMARY LIKE '%Engine%' 
+OR SUMMARY LIKE '%fire%'
+OR SUMMARY LIKE '%Explosion%'
+OR SUMMARY LIKE '%Exploded%'
+OR SUMMARY LIKE '%malfunction%'
+OR SUMMARY LIKE '%fuselage%'
+OR SUMMARY LIKE '%rudder%'
+OR SUMMARY LIKE '%four motors%'
+OR SUMMARY LIKE '%Mechanical Problem%'
+AND Summary NOT LIKE '%shot%'
+AND Summary NOT LIKE '%weather%'
+AND Summary NOT LIKE '%storm%'
+AND Summary NOT LIKE '%wind%'
+AND Summary NOT LIKE '%terrorist%'
+AND Summary NOT LIKE '%bomb%'
+AND Summary NOT LIKE '%bird%'
+AND SUMMARY NOT LIKE '%pigeon%'
+AND SUMMARY NOT LIKE '%flock%'
+AND SUMMARY NOT LIKE '%Vulture%'
+
+--1190 ROWS
+
+--Weather
+SELECT *
+FROM [dbo].[airplane_crashes]
+WHERE SUMMARY LIKE '%Weather%'
+OR SUMMARY LIKE '%Storm%'
+OR SUMMARY LIKE '%fog%'
+OR SUMMARY LIKE '%wind%'
+OR SUMMARY LIKE '%gale%'
+OR SUMMARY LIKE '%lightning%'
+OR SUMMARY LIKE '%Rain%'
+OR SUMMARY LIKE '%hail%'
+OR SUMMARY LIKE '%visibility%'
+OR SUMMARY LIKE '%visiblity%'
+OR SUMMARY LIKE '%Aerial Mast%'
+OR SUMMARY LIKE '%snow%'
+OR SUMMARY LIKE '%monsoon%'
+OR SUMMARY LIKE '%micoburst%'
+AND Summary NOT LIKE '%bird%'
+AND SUMMARY NOT LIKE '%pigeon%'
+AND SUMMARY NOT LIKE '%flock%'
+AND SUMMARY NOT LIKE '%Vulture%'
+--1585 rows
+
+-----------------------------
+--Flights taken out by birds
+-----------------------------
+
+SELECT [DATE]
+, [Summary]
+, ROUND (CAST(CASE 
+    WHEN SUM([Aboard]) = 0 
+        OR SUM([Aboard]) IS NULL
+        OR SUM([Fatalities]) IS NULL THEN NULL 
+    WHEN SUM([Fatalities]) = 0 THEN 100
+        ELSE (CAST(SUM([Fatalities])AS FLOAT)/CAST(SUM([Aboard]) AS FLOAT)) * 100
+    END AS FLOAT),2) AS Mortality_Rate
+FROM [dbo].[airplane_crashes]
+WHERE SUMMARY LIKE '%bird%'
+OR SUMMARY LIKE '%pigeon%'
+OR SUMMARY LIKE '%flock%'
+OR SUMMARY LIKE '%Vulture%'
+GROUP BY [date], [Summary]
+
+---------------------------------------------------------------
+--CREATE RELATION SHIP WITH CrashType (Mechincal/Weather/Bird/Other)
+---------------------------------------------------------------
+
+ALTER TABLE [dbo].[airplane_crashes]
+ADD [Crash_Type] NVARCHAR(50) NULL
+
+UPDATE dbo.airplane_crashes
+SET [Crash_Type] = 'Weather' 
+WHERE SUMMARY LIKE '%Weather%'
+OR SUMMARY LIKE '%Storm%'
+OR SUMMARY LIKE '%fog%'
+OR SUMMARY LIKE '%wind%'
+OR SUMMARY LIKE '%gale%'
+OR SUMMARY LIKE '%lightning%'
+OR SUMMARY LIKE '%Rain%'
+OR SUMMARY LIKE '%hail%'
+OR SUMMARY LIKE '%visibility%'
+OR SUMMARY LIKE '%visiblity%'
+OR SUMMARY LIKE '%snow%'
+OR SUMMARY LIKE '%monsoon%'
+OR SUMMARY LIKE '%Aerial Mast%'
+OR SUMMARY LIKE '%micoburst%'
+
+UPDATE dbo.airplane_crashes
+SET [Crash_Type] = 'Mechanical' 
+WHERE SUMMARY LIKE '%Engine%' 
+OR SUMMARY LIKE '%fire%'
+OR SUMMARY LIKE '%Explosion%'
+OR SUMMARY LIKE '%Exploded%'
+OR SUMMARY LIKE '%malfunction%'
+OR SUMMARY LIKE '%fuselage%'
+OR SUMMARY LIKE '%rudder%'
+OR SUMMARY LIKE '%four motors%'
+OR SUMMARY LIKE '%Mechanical Problem%'
+AND Summary NOT LIKE '%shot%'
+AND Summary NOT LIKE '%weather%'
+AND Summary NOT LIKE '%storm%'
+AND Summary NOT LIKE '%wind%'
+AND Summary NOT LIKE '%terrorist%'
+AND Summary NOT LIKE '%bomb%'
+
+UPDATE dbo.airplane_crashes
+SET [Crash_Type] = 'Bird' 
+WHERE SUMMARY LIKE '%bird%'
+OR SUMMARY LIKE '%pigeon%'
+OR SUMMARY LIKE '%flock%'
+OR SUMMARY LIKE '%Vulture%'
+OR SUMMARY LIKE '%lapwing%'
+
+
+UPDATE dbo.airplane_crashes
+SET [Crash_Type] = 'Other'
+WHERE [Crash_Type] IS NULL
+
+--------------------------------------------------
+--Seperates Crash Type for visualization (Tableau)
+--------------------------------------------------
+
+SELECT *
+FROM [dbo].[airplane_crashes]
+WHERE [crash_type] = 'Mechanical' 
+
+SELECT *
+FROM [dbo].[airplane_crashes]
+WHERE [crash_type] = 'Weather' 
+
+SELECT *
+FROM [dbo].[airplane_crashes]
+WHERE [crash_type] = 'Other' 
+AND [Summary] IS NOT NULL
+
+SELECT * 
+FROM [dbo].[airplane_crashes]
+WHERE [crash_type] = 'bird'
+
+SELECT * 
+FROM [dbo].[airplane_crashes]
