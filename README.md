@@ -1,15 +1,21 @@
 <h1 align="center">Hi 👋, I'm Yadi Cruzado</h1>
 <h3 align="center">A passionate data analyst in Atlanta, Georgia</h3>
 
+![] 
+
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=yadivr&label=Profile%20views&color=0e75b6&style=flat" alt="yadivr" /> </p>
 
 - 🔭 I’m currently working on [multiple analytic projects for my portfolio](https://github.com/YadiVR/PortfolioProject)
 
 - 🌱 I’m currently learning **SQL, Google analytics, Python, R and more.**
 
+- 📝 [Here's my resume](https://www.linkedin.com/in/yadiel-cruzado-0a8512185/overlay/1715893949820/single-media-viewer/?profileId=ACoAACuuKwABJfad-bgeCVUfw5_JkqElkB8lovA)
+
 - 👨‍💻 All of my projects are available at [https://github.com/YadiVR/PortfolioProject](https://github.com/YadiVR/PortfolioProject)
 
 - 📫 How to reach me **yadielcruzado@gmail.com**
+
+- ✉️ [Send me an email](mailto:yadielcruzado@gmail.com)
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
