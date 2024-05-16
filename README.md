@@ -1,7 +1,7 @@
 <h1 align="center">Hi 👋, I'm Yadi Cruzado</h1>
 <h3 align="center">A passionate data analyst in Atlanta, Georgia</h3>
 
-![] 
+![]https://github.com/YadiCruzado/PortfolioProject/blob/main/images/Sad%20Sketch.png?raw=true
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=yadivr&label=Profile%20views&color=0e75b6&style=flat" alt="yadivr" /> </p>
 
