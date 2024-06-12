@@ -5,13 +5,11 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=yadivr&label=Profile%20views&color=0e75b6&style=flat" alt="yadivr" /> </p>
 
-- 🔭 I’m currently working on [multiple analytic projects for my portfolio](https://github.com/YadiVR/PortfolioProject)
+- 👨‍💻 My data visualizations are here [My Tableau Public profile](https://public.tableau.com/app/profile/yadiel.cruzado/vizzes)
 
 - 🌱 I’m currently learning **SQL, Google analytics, Python, R and more.**
 
-- 📝 [Here's my resume](https://www.linkedin.com/in/yadiel-cruzado-0a8512185/overlay/1715893949820/single-media-viewer/?profileId=ACoAACuuKwABJfad-bgeCVUfw5_JkqElkB8lovA)
-
-- 👨‍💻 All of my projects are available at [https://github.com/YadiVR/PortfolioProject](https://github.com/YadiVR/PortfolioProject)
+- 📝 [Here's my LinkedIn account](https://www.linkedin.com/in/francisco-cruzado-0a8512185/)
 
 - 📫 How to reach me **yadielcruzado@gmail.com**
 
