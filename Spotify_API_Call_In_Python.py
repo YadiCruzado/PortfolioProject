@@ -1,6 +1,6 @@
 import base64
 import requests
-import os
+import os  # hides sensetive information
 
 # Fetch credentials from environment variables
 CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
@@ -8,7 +8,7 @@ CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 access_token = os.getenv('SPOTIFY_ACCESS_TOKEN')
 artist_id = '6m9Qgp7wd2QBDFGS9tJExD'
 
-# Function to get an access token
+# Function to get access token
 def get_access_token(client_id, client_secret):
     auth_url = 'https://accounts.spotify.com/api/token'
     headers = {
@@ -25,7 +25,7 @@ def get_access_token(client_id, client_secret):
 access_token = get_access_token(CLIENT_ID, CLIENT_SECRET)
 print("Access Token:", access_token)
 
-# First we will search Spotify's API for the artist we want
+# Search Spotify's API for the artist we want
 def search_artist(access_token, artist_name):
     search_url = 'https://api.spotify.com/v1/search'
     headers = {
@@ -38,8 +38,8 @@ def search_artist(access_token, artist_name):
     }
     response = requests.get(search_url, headers=headers, params=params)
     return response.json()
-
-# Replace 'artist_name' with the name of the artist you're searching for
+    
+# defining more variables 
 artist_name = 'Elation Cycle'
 search_data = search_artist(access_token, artist_name)
 
